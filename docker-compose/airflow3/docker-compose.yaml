@@ -74,10 +74,10 @@ x-airflow-common:
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
     # for other purpose (development, test and especially production usage) build/extend Airflow image.
-    # _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
     # JAVA_HOME: /usr/lib/jvm/java-17-openjdk-arm64
     # PATH: /usr/lib/jvm/java-17-openjdk-arm64/bin:${PATH}
-    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-pyspark==3.5.0}
+    # _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-pyspark==3.5.0}
     # _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-apache-airflow-providers-apache-spark==4.11.3 pyspark==3.5.0}
     # JAVA_HOME: /usr/lib/jvm/java-17-openjdk-arm64
     # PATH: /usr/lib/jvm/java-17-openjdk-arm64/bin:${PATH}
