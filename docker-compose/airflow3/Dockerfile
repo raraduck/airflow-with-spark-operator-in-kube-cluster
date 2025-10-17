@@ -14,7 +14,7 @@ RUN apt-get update && \
 # -------------------------------------------------------
 # 3️⃣ JAVA_HOME 환경변수 설정
 # -------------------------------------------------------
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 # -------------------------------------------------------
