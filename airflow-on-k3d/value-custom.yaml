@@ -1,0 +1,16 @@
+airflow:
+  image:
+    repository: dwnusa/airflow
+    tag: v3.1.0-jdk17-pyspark-3.5.0-amd64
+    pullPolicy: IfNotPresent
+
+dags:
+  persistence:
+    enabled: true
+    existingClaim: airflow-dags
+
+postgresql:
+  enabled: true
+  image:
+    tag: latest
+
