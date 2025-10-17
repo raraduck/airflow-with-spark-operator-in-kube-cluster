@@ -206,11 +206,6 @@ def analyze_and_store_to_s3(templates_dict, **kwargs):
             "ratio_top10": [r.asDict() for r in ratio_df.limit(10).collect()],
             "top5_stations": [r.asDict() for r in top5_stations.collect()],
             "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-
-            # "total_by_line": [row.asDict() for row in total_by_line.collect()],
-            # "station_stats": [row.asDict() for row in station_stats.collect()],
-            # "ratio_top10": [row.asDict() for row in ratio_df.limit(10).collect()],
-            # "top5_stations": [row.asDict() for row in top5_stations.collect()],
         }
 
         print("\n✅ 분석이 성공적으로 완료되었습니다.")
@@ -242,31 +237,6 @@ def analyze_and_store_to_s3(templates_dict, **kwargs):
         raise(e)
 
     spark.stop()
-    # s3_full_path = f"s3a://{s3_bucket}/{s3_input_key}"
-    # try:
-
-    #     df = spark.read.json(s3_full_path)
-    #     df.show(10, truncate=False)
-    # except Exception as e:
-    #     print(f"ERROR: {e}")
-    #     raise(e)
-    #     return ""
-    # print(f"s3 read 성공")
-
-
-    # try:
-    #     with open(local_input_path, "w", encoding="utf-8") as f:
-    #         f.write(df)
-    # except Exception as e:
-    #     print(f"ERROR: {file_name} 파일 저장 실패")
-    #     raise Exception(e)
-    #     return ""
-        
-    # print(f"{file_name} 파일 저장 완료")
-
-
-   #코드 추가
-
    
 # -------------------------
 # DAG 정의 및 Task 구성

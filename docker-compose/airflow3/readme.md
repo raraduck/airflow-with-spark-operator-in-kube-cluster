@@ -1,4 +1,4 @@
-# airflow with jdk and pyspark
+# How to run
 
 ```bash
 docker compose build
