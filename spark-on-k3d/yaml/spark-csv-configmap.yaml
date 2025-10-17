@@ -1,0 +1,38 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: spark-csv-analyzer
+  namespace: default
+spec:
+  type: Python
+  mode: cluster
+  image: docker.io/library/spark:4.0.0
+  imagePullPolicy: IfNotPresent
+  mainApplicationFile: local:///opt/spark/scripts/analyze_csv.py
+  sparkVersion: 4.0.0
+  restartPolicy:
+    type: Never
+  driver:
+    cores: 1
+    memory: 512m
+    serviceAccount: spark-operator-spark
+    volumeMounts:
+      - name: script
+        mountPath: /opt/spark/scripts
+      - name: data
+        mountPath: /opt/spark-data
+  executor:
+    cores: 1
+    instances: 1
+    memory: 512m
+    volumeMounts:
+      - name: data
+        mountPath: /opt/spark-data
+  volumes:
+    - name: script
+      configMap:
+        name: pyspark-script
+    - name: data
+      configMap:
+        name: csv-data
+
