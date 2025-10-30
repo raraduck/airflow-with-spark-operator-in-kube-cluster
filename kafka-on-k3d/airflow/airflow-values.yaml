@@ -1,5 +1,5 @@
-airflow:
-  image:
+images:
+  airflow:
     repository: dwnusa/airflow
     tag: v3.1.0-jdk17-pyspark-3.5.5-amd64
     pullPolicy: IfNotPresent
