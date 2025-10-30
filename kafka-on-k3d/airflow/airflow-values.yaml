@@ -19,9 +19,10 @@ postgresql:
   image:
     tag: latest
 
-webserver:                # ✅ ← 올바른 섹션 이름
+webserver:
   service:
     type: NodePort
     ports:
-      http: 8080
-    nodePort: 30097
+      - name: airflow-ui
+        port: 8080
+        nodePort: 30097
