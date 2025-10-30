@@ -127,7 +127,11 @@ kubectl apply -f kafka-ui.yaml
 ```bash
 k3d cluster create kafka-cluster \
   --agents 3 \
-  --port "30000:30000@agent[0]" \
+  --port "30092:30092@loadbalancer" \
+  --port "30093:30093@loadbalancer" \
+  --port "30094:30094@loadbalancer" \
+  --port "30095:30095@loadbalancer" \
+  --port "30097:30097@loadbalancer" \
   --volume /home2/dwnusa/c20/kafka-on-k3d:/opt/kafka-on-k3d@all
   # http://localhost:30000
 ```
