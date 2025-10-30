@@ -29,3 +29,8 @@ configurationOverrides:
 
   # ✅ (선택) Producer가 없는 토픽으로 보낼 때 자동 생성 허용
   auto.create.topics.enable: true
+
+service:
+  type: NodePort
+  nodePorts:
+    client: 30092
