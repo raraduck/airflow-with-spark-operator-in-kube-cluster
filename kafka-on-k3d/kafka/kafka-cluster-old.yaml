@@ -121,8 +121,8 @@ metadata:
     helm.sh/chart: kafka-32.4.3
 type: Opaque
 data:
-  inter-broker-password: "TXpCckIzTTB0MA=="
-  controller-password: "dDZTVnZMa0Fodg=="
+  inter-broker-password: "bEFwdXE0WmZqZw=="
+  controller-password: "ODRjMWlPV1poZg=="
 ---
 # Source: kafka/templates/secrets.yaml
 apiVersion: v1
@@ -138,10 +138,10 @@ metadata:
     helm.sh/chart: kafka-32.4.3
 type: Opaque
 data:
-  cluster-id: "OXFTS01JMm1lVUxVQlk0TjNzaGtOaQ=="
-  controller-0-id: "UmNXd0U2VzgzMWpvSUNRUzZBTFBUTQ=="
-  controller-1-id: "WVA5RHQ2akJsQUZPV2RVMjVZNVp2dg=="
-  controller-2-id: "SmJsUkFuSEl6c0h1VVNDY0lkYW5nOQ=="
+  cluster-id: "bXJkbWNyUFFyN2NFTnVySUlHcW1SUw=="
+  controller-0-id: "bWR4RnFtTHFUMzhxYUJhSnNlZHdubQ=="
+  controller-1-id: "NVI4aE13ZHpaVU1MVFZCR2N4RlBIVQ=="
+  controller-2-id: "V0hnSnphZ3dJcURkRjFsdGpBUFhDTw=="
 ---
 # Source: kafka/templates/controller-eligible/configmap.yaml
 apiVersion: v1
@@ -159,7 +159,7 @@ metadata:
     app.kubernetes.io/part-of: kafka
 data:
   server.properties: |-
-    advertised.listeners=PLAINTEXT://localhost:30092,INTERNAL://advertised-address-placeholder:9094
+    advertised.listeners=CLIENT://advertised-address-placeholder:9092,INTERNAL://advertised-address-placeholder:9094
     controller.listener.names=CONTROLLER
     controller.quorum.bootstrap.servers=kafka-controller-0.kafka-controller-headless.kafka.svc.cluster.local:9093,kafka-controller-1.kafka-controller-headless.kafka.svc.cluster.local:9093,kafka-controller-2.kafka-controller-headless.kafka.svc.cluster.local:9093
     inter.broker.listener.name=INTERNAL
@@ -229,15 +229,22 @@ metadata:
     helm.sh/chart: kafka-32.4.3
     app.kubernetes.io/component: kafka
 spec:
-  type: NodePort
-  externalTrafficPolicy: "Cluster"
+  # type: ClusterIP
+  type: NodePort         # 변경
   sessionAffinity: None
   ports:
     - name: tcp-client
-      port: 9092
-      protocol: TCP
+      port: 9092         # 내부 Kafka listener 포트
       targetPort: client
-      nodePort: 30092
+      nodePort: 30092    # 외부 노출 포트 (추가)
+    - name: tcp-controller
+      port: 9093
+      targetPort: controller
+      nodePort: 30093
+    - name: tcp-interbroker
+      port: 9094
+      targetPort: interbroker
+      nodePort: 30094
   selector:
     app.kubernetes.io/instance: kafka
     app.kubernetes.io/name: kafka
@@ -281,7 +288,7 @@ spec:
         app.kubernetes.io/part-of: kafka
       annotations:
         checksum/configuration: 9eee640ea39cac503f7b61d124a6b1824adb865d47c98caf04b37fca5d45c1e4
-        checksum/secret: 321474a89b4ec8d41746c0a6a354efcf52d524a859cf2e4cd112e6a8a154c111
+        checksum/secret: 1ee4634d6df5e47b1209fc11d04a0cea1ad06801c2a67965f5f9865cbec0c694
     spec:
       
       automountServiceAccountToken: false
@@ -499,12 +506,6 @@ spec:
               value: "controller_user"
             - name: KAFKA_CONTROLLER_PASSWORD_FILE
               value: /opt/bitnami/kafka/config/secrets/controller-password
-            - name: KAFKA_CFG_LISTENERS
-              value: PLAINTEXT://:9092
-            - name: KAFKA_CFG_ADVERTISED_LISTENERS
-              value: PLAINTEXT://localhost:30092
-            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
-              value: PLAINTEXT:PLAINTEXT
           ports:
             - name: controller
               containerPort: 9093
