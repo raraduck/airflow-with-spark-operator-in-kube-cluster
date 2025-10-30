@@ -4,9 +4,10 @@ airflow:
     tag: v3.1.0-jdk17-pyspark-3.5.5
     pullPolicy: IfNotPresent
 
-  extraPipPackages:
-    - apache-airflow-providers-apache-spark
-    - apache-airflow-providers-cncf-kubernetes
+  # Already installed in Dockerfile 
+  # extraPipPackages:
+  #   - apache-airflow-providers-apache-spark
+  #   - apache-airflow-providers-cncf-kubernetes
 
 dags:
   persistence:

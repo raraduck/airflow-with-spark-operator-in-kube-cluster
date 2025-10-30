@@ -94,6 +94,10 @@ Airflow 2.8 → 3.0 전환에서 core에 있던 여러 provider packages가 완�
 
 그래서 Airflow를 Helm으로 설치했을 때 기본 컨테이너엔 Spark 관련 Operator도 Connection Type도 없습니다.
 ```bash
+helm repo add apache-airflow https://airflow.apache.org
+helm repo update
+```
+```bash
 helm upgrade --install airflow apache-airflow/airflow  \
     --namespace airflow \
     --create-namespace \
@@ -103,6 +107,13 @@ helm upgrade --install airflow apache-airflow/airflow  \
     --set postgresql.image.tag=latest
     # --set persistence.enabled=true \
     # --set persistence.existingClaim=airflow-data \
+```
+or
+```bash
+helm upgrade --install airflow apache-airflow/airflow \
+  --namespace airflow \
+  --create-namespace \
+  -f airflow-values.yaml
 ```
 
 ## 5. Open api server 
