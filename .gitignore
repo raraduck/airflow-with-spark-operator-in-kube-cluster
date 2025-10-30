@@ -3,3 +3,4 @@ plugins
 .env
 __pycache__
 config
+.DS_Store
