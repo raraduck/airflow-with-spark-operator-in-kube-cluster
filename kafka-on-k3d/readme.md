@@ -62,7 +62,7 @@ helm template kafka bitnami/kafka \
   -f values.yaml > kafka-cluster.yaml
 
 kubectl create namespace kafka
-kubectl apply -f kafka/kafka-cluster.yaml
+kubectl apply -f kafka-cluster.yaml
 ```
 
 ## 4.2. delete or reinstall
@@ -116,7 +116,7 @@ spec:
   - name: http
     port: 8080
     targetPort: 8080
-    nodePort: 30000
+    nodePort: 30095
 ```
 ```bash
 kubectl create namespace kafka

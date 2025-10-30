@@ -35,3 +35,15 @@ extraEnvVars:
     value: PLAINTEXT://localhost:30092
   - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
     value: PLAINTEXT:PLAINTEXT
+
+# ✅ 호스트 볼륨 → Kafka Pod 연결
+extraVolumes:
+  - name: kafka-host-data
+    hostPath:
+      path: /opt/kafka-on-k3d          # k3d 노드 내부 경로 (=호스트 공유 디렉터리)
+      type: Directory
+
+extraVolumeMounts:
+  - name: kafka-host-data
+    mountPath: /mnt/kafka-on-k3d       # Kafka 컨테이너 안에서 접근할 경로
+    readOnly: false
