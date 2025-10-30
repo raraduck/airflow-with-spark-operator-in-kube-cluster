@@ -25,6 +25,9 @@ listeners:
 configurationOverrides:
   log.retention.hours: 24
   auto.create.topics.enable: true
+  advertised.listeners: PLAINTEXT://localhost:30092   # ✅ 중복 지정
+  listener.security.protocol.map: PLAINTEXT:PLAINTEXT
+  listeners: PLAINTEXT://:9092
 
 service:
   type: NodePort
