@@ -1,0 +1,24 @@
+airflow:
+  image:
+    repository: dwnusa/airflow
+    tag: v3.1.0-jdk17-pyspark-3.5.5
+    pullPolicy: IfNotPresent
+
+  extraPipPackages:
+    - apache-airflow-providers-apache-spark
+    - apache-airflow-providers-cncf-kubernetes
+
+dags:
+  persistence:
+    enabled: true
+    existingClaim: airflow-dags
+
+postgresql:
+  enabled: true
+  image:
+    tag: latest
+
+web:
+  service:
+    type: NodePort
+    nodePort: 30097
