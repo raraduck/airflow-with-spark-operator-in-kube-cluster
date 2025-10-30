@@ -1,5 +1,10 @@
 replicaCount: 3
 
+image:
+  repository: bitnamilegacy/kafka
+  tag: latest
+  pullPolicy: IfNotPresent
+  
 kraft:
   enabled: true
 
