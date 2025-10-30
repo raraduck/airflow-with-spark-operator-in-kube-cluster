@@ -10,6 +10,10 @@ kraft:
 
 controller:
   replicaCount: 3
+  advertisedListeners:
+    - name: CLIENT
+      advertisedHost: localhost
+      advertisedPort: 30092
 
 listeners:
   client:
