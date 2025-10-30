@@ -38,6 +38,7 @@ docker exec -it k3d-airflow-cluster-agent-0 sh
 ## 3. Add helm repo for spark-operator 
 ```bash
 helm repo add --force-update spark-operator https://kubeflow.github.io/spark-operator
+helm repo update
 ```
 
 ## 4. Install Spark-operator
@@ -168,4 +169,12 @@ spec:
 - Spark-job 제출 및 실행
 ```bash
 kubectl create -f spark-csv.yaml
+```
+
+
+## Tips
+```bash
+k3d cluster list
+k3d cluster delete mycluster
+k3d cluster delete --all
 ```

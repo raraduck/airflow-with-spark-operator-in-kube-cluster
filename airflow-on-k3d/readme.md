@@ -141,3 +141,10 @@ k3d v5.6 이상 버전에서 지원
 k3d cluster edit airflow-cluster --port-add 8080:32606@loadbalancer
 ```
 http://127.0.0.1:8080/
+
+## 7. Tips
+```bash
+k3d cluster list
+k3d cluster delete mycluster
+k3d cluster delete --all
+```

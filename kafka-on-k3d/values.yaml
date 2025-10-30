@@ -1,0 +1,18 @@
+replicaCount: 3
+
+kraft:
+  enabled: true
+
+controller:
+  replicaCount: 3
+
+listeners:
+  client:
+    protocol: PLAINTEXT
+    port: 9092
+  internal:
+    protocol: PLAINTEXT
+    port: 9093
+
+configurationOverrides:
+  log.retention.hours: 24
