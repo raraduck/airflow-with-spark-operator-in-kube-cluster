@@ -22,11 +22,8 @@ listeners:
 configurationOverrides:
   log.retention.hours: 24
 
-  # ✅ 각 브로커별 advertised.listeners 지정
-  advertised.listeners: >-
-    PLAINTEXT://kafka-0.localhost:30092,
-    PLAINTEXT://kafka-1.localhost:30093,
-    PLAINTEXT://kafka-2.localhost:30094
+  # ✅ 외부 접근 허용 설정
+  advertised.listeners: PLAINTEXT://localhost:30092
   listener.security.protocol.map: PLAINTEXT:PLAINTEXT
   listeners: PLAINTEXT://:9092
 
@@ -37,5 +34,5 @@ service:
   type: NodePort
   nodePorts:
     client: 30092
-    internal: 30093
-    controller: 30094
+    # internal: 30093
+    # controller: 30094
