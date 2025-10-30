@@ -193,22 +193,26 @@ metadata:
     app.kubernetes.io/component: controller-eligible
     app.kubernetes.io/part-of: kafka
 spec:
-  type: ClusterIP
-  clusterIP: None
+  # type: ClusterIP
+  # clusterIP: None
+  type: NodePort         # 변경
   publishNotReadyAddresses: true
   ports:
-    - name: tcp-interbroker
-      port: 9094
-      protocol: TCP
-      targetPort: interbroker
     - name: tcp-client
       port: 9092
       protocol: TCP
       targetPort: client
+      nodePort: 30092    # 외부 노출 포트 (추가)
     - name: tcp-controller
       protocol: TCP
       port: 9093
       targetPort: controller
+      nodePort: 30093
+    - name: tcp-interbroker
+      port: 9094
+      protocol: TCP
+      targetPort: interbroker
+      nodePort: 30094
   selector:
     app.kubernetes.io/instance: kafka
     app.kubernetes.io/name: kafka
