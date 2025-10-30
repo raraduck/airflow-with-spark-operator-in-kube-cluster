@@ -21,12 +21,17 @@ listeners:
 
 configurationOverrides:
   log.retention.hours: 24
-  advertised.listeners: PLAINTEXT://localhost:30092
-  listener.security.protocol.map: PLAINTEXT:PLAINTEXT
-  listeners: PLAINTEXT://:9092
   auto.create.topics.enable: true
 
 service:
   type: NodePort
   nodePorts:
     client: 30092
+
+extraEnvVars:
+  - name: KAFKA_CFG_LISTENERS
+    value: PLAINTEXT://:9092
+  - name: KAFKA_CFG_ADVERTISED_LISTENERS
+    value: PLAINTEXT://localhost:30092
+  - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+    value: PLAINTEXT:PLAINTEXT
