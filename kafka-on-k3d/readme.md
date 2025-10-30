@@ -127,13 +127,14 @@ kubectl apply -f kafka-ui.yaml
 ```bash
 k3d cluster create kafka-cluster \
   --agents 3 \
-  --port "30092:30092@loadbalancer" \
-  --port "30093:30093@loadbalancer" \
-  --port "30094:30094@loadbalancer" \
-  --port "30095:30095@loadbalancer" \
-  --port "30097:30097@loadbalancer" \
+  --port "30092:30092@server:*" \
+  --port "30093:30093@server:*" \
+  --port "30094:30094@server:*" \
+  --port "30095:30095@server:*" \
+  --port "30097:30097@server:*" \
   --volume /home2/dwnusa/c20/kafka-on-k3d:/opt/kafka-on-k3d@all
   # http://localhost:30000
+#   --volume /home2/dwnusa/c20/airflow-with-spark-operator-in-kube-cluster/kafka-on-k3d:/opt/kafka-on-k3d@all
 ```
 or kubectl port-forward
 ```bash
