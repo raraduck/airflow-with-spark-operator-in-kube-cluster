@@ -19,7 +19,7 @@ postgresql:
   image:
     tag: latest
 
-api:
+api-server:
   service:
     type: NodePort
     ports:
