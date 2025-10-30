@@ -1,55 +1,50 @@
 replicaCount: 3
 
 image:
-  repository: bitnamilegacy/kafka
+  repository: bitnami/kafka
   tag: latest
   pullPolicy: IfNotPresent
   
 kraft:
-  enabled: false  
+  enabled: true  # ✅ KRaft 모드 사용 (Zookeeper 불필요)
 
 zookeeper:
-  enabled: true
+  enabled: false  # ✅ Zookeeper 비활성화
 
 controller:
   replicaCount: 3
 
+# ✅ 리스너 설정 수정
 listeners:
   client:
     protocol: PLAINTEXT
-    port: 9092
-  internal:
+  external:
     protocol: PLAINTEXT
-    port: 9093
 
-configurationOverrides:
-  log.retention.hours: 24
-  auto.create.topics.enable: true
-  advertised.listeners: PLAINTEXT://localhost:30092   # ✅ 중복 지정
-  listener.security.protocol.map: PLAINTEXT:PLAINTEXT
-  listeners: PLAINTEXT://:9092
+externalAccess:
+  enabled: true
+  controller:
+    service:
+      type: NodePort
+      nodePorts:
+        - 30092
+        - 30093
+        - 30094
+    domain: localhost
+
+# ✅ 불필요한 설정 제거 (충돌 방지)
+# configurationOverrides, extraEnvVars는 externalAccess와 충돌할 수 있으므로 제거
 
 service:
-  type: NodePort
-  nodePorts:
-    client: 30092
+  type: ClusterIP  # ✅ NodePort는 externalAccess에서 처리
 
-extraEnvVars:
-  - name: KAFKA_CFG_LISTENERS
-    value: PLAINTEXT://:9092
-  - name: KAFKA_CFG_ADVERTISED_LISTENERS
-    value: PLAINTEXT://localhost:30092
-  - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
-    value: PLAINTEXT:PLAINTEXT
-
-# ✅ 호스트 볼륨 → Kafka Pod 연결
 extraVolumes:
   - name: kafka-host-data
     hostPath:
-      path: /opt/kafka-on-k3d          # k3d 노드 내부 경로 (=호스트 공유 디렉터리)
-      type: Directory
+      path: /opt/kafka-on-k3d
+      type: DirectoryOrCreate  # ✅ 디렉터리가 없으면 자동 생성
 
 extraVolumeMounts:
   - name: kafka-host-data
-    mountPath: /mnt/kafka-on-k3d       # Kafka 컨테이너 안에서 접근할 경로
+    mountPath: /mnt/kafka-on-k3d
     readOnly: false
