@@ -1,25 +1,30 @@
 replicaCount: 3
 
 image:
-  repository: bitnamilegacy/kafka
+  repository: bitnami/kafka
   tag: latest
   pullPolicy: IfNotPresent
   
 kraft:
-  enabled: true  # ✅ KRaft 모드 사용 (Zookeeper 불필요)
-
+  enabled: true
+  
 zookeeper:
-  enabled: false  # ✅ Zookeeper 비활성화
+  enabled: false
 
 controller:
   replicaCount: 3
 
-# ✅ 리스너 설정 수정
+# ✅ 리스너 설정 - EXTERNAL에 9092 포트 사용
 listeners:
   client:
     protocol: PLAINTEXT
+    port: 9092
+  controller:
+    protocol: PLAINTEXT
+    port: 9093
   external:
     protocol: PLAINTEXT
+    port: 9094  # 컨테이너 내부 포트
 
 externalAccess:
   enabled: true
@@ -31,18 +36,22 @@ externalAccess:
         - 30093
         - 30094
     domain: localhost
-
-# ✅ 불필요한 설정 제거 (충돌 방지)
-# configurationOverrides, extraEnvVars는 externalAccess와 충돌할 수 있으므로 제거
+    # ✅ advertised port를 명시적으로 지정
+    advertisedPorts:
+      - 30092
+      - 30093
+      - 30094
 
 service:
-  type: ClusterIP  # ✅ NodePort는 externalAccess에서 처리
+  type: ClusterIP
+  ports:
+    client: 9092
 
 extraVolumes:
   - name: kafka-host-data
     hostPath:
       path: /opt/kafka-on-k3d
-      type: DirectoryOrCreate  # ✅ 디렉터리가 없으면 자동 생성
+      type: DirectoryOrCreate
 
 extraVolumeMounts:
   - name: kafka-host-data
