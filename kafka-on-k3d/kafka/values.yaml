@@ -22,15 +22,20 @@ listeners:
 configurationOverrides:
   log.retention.hours: 24
 
-  # ✅ 외부(호스트) 접근 허용을 위한 설정 추가
-  advertised.listeners: PLAINTEXT://localhost:30092
+  # ✅ 각 브로커별 advertised.listeners 지정
+  advertised.listeners: >-
+    PLAINTEXT://kafka-0.localhost:30092,
+    PLAINTEXT://kafka-1.localhost:30093,
+    PLAINTEXT://kafka-2.localhost:30094
   listener.security.protocol.map: PLAINTEXT:PLAINTEXT
   listeners: PLAINTEXT://:9092
 
-  # ✅ (선택) Producer가 없는 토픽으로 보낼 때 자동 생성 허용
+  # ✅ 자동 토픽 생성
   auto.create.topics.enable: true
 
 service:
   type: NodePort
   nodePorts:
     client: 30092
+    internal: 30093
+    controller: 30094
