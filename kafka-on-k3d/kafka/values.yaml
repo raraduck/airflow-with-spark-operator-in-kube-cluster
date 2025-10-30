@@ -29,10 +29,10 @@ service:
     client: 30092
 
 # ✅ 환경변수 기반 강제 설정
-extraEnvVars:
-  - name: KAFKA_CFG_ADVERTISED_LISTENERS
-    value: PLAINTEXT://localhost:30092
-  - name: KAFKA_CFG_LISTENERS
-    value: PLAINTEXT://:9092
-  - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
-    value: PLAINTEXT:PLAINTEXT
+# extraEnvVars:
+#   - name: KAFKA_CFG_ADVERTISED_LISTENERS
+#     value: PLAINTEXT://localhost:30092
+#   - name: KAFKA_CFG_LISTENERS
+#     value: PLAINTEXT://:9092
+#   - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
+#     value: PLAINTEXT:PLAINTEXT
