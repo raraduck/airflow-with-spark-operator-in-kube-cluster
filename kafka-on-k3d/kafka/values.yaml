@@ -25,18 +25,13 @@ listeners:
 
 configurationOverrides:
   log.retention.hours: 24
-
-  # ✅ 외부 접근 허용 설정
-  advertised.listeners: PLAINTEXT://localhost:30092
-  listener.security.protocol.map: PLAINTEXT:PLAINTEXT
-  listeners: PLAINTEXT://:9092
-
-  # ✅ 자동 토픽 생성
   auto.create.topics.enable: true
 
 service:
   type: NodePort
   nodePorts:
     client: 30092
-    # internal: 30093
-    # controller: 30094
+
+extraEnvVars:
+  - name: KAFKA_CFG_LISTENERS
+    value: PLAINTEXT://:9092
