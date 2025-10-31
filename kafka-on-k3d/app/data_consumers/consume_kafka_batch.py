@@ -12,8 +12,14 @@ schema = StructType() \
 
 # Spark 세션
 spark = SparkSession.builder \
-    .appName("KafkaToPostgresBatch") \
+    .appName("StockBatchAnalyzer") \
+    .master(self.spark_master if self.spark_master else "local[*]") \
+    .config("spark.sql.session.timeZone", "UTC") \
+    .config("spark.executor.memory", "1g") \
+    .config("spark.driver.memory", "1g") \
     .getOrCreate()
+    # .appName("KafkaToPostgresBatch") \
+    # .getOrCreate()
 
 # Kafka에서 데이터 배치로 읽기 (처음부터 전체)
 df = spark.read \
