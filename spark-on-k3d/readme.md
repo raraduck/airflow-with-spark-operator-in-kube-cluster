@@ -18,8 +18,14 @@ k3d cluster create spark-cluster \
 ```bash
 k3d cluster create spark-cluster \
     --agents 3 \
+    --port "30092:30092@server:*" \
+    --port "30093:30093@server:*" \
+    --port "30094:30094@server:*" \
+    --port "30095:30095@server:*" \
+    --port "30096:30096@server:*" \
+    --port "30097:30097@server:*" \
     --volume /home2/dwnusa/c20/data:/opt/spark-data@all \
-    --volume /home2/dwnusa/c20/dags:/opt/airflow/dags@all
+    --volume /home2/dwnusa/c20/dags:/opt/airflow/dags@all \
 ```
 ### 2.1. Check shared volume in node
 ```bash

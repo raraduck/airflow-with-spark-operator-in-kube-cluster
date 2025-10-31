@@ -21,7 +21,27 @@ k3d cluster create kafka-cluster \
     --volume /home2/dwnusa/c20/kafka-on-k3d:/opt/kafka-on-k3d@all 
 ```
 
-### 2.1. Check shared volume in node
+## 2.1. NodePort setup
+```bash
+k3d cluster create kafka-cluster \
+  --agents 3 \
+    --port "30092:30092@server:*" \
+    --port "30093:30093@server:*" \
+    --port "30094:30094@server:*" \
+    --port "30095:30095@server:*" \
+    --port "30096:30096@server:*" \
+    --port "30097:30097@server:*" \
+  --volume /home2/dwnusa/c20/kafka-on-k3d:/opt/kafka-on-k3d@all \
+  # http://localhost:30000
+#   --volume /home2/dwnusa/c20/airflow-with-spark-operator-in-kube-cluster/kafka-on-k3d:/opt/kafka-on-k3d@all
+```
+or kubectl port-forward
+```bash
+kubectl port-forward -n kafka svc/kafka-ui 8080:8080
+# http://localhost:8080
+```
+
+### 2.2. Check shared volume in node
 ```bash
 k3d node list
 docker exec -it k3d-kafka-cluster-agent-0 sh
@@ -123,24 +143,6 @@ kubectl create namespace kafka
 kubectl apply -f kafka-ui.yaml
 ```
 
-## 5.1. NodePort setup
-```bash
-k3d cluster create kafka-cluster \
-  --agents 3 \
-  --port "30092:30092@server:*" \
-  --port "30093:30093@server:*" \
-  --port "30094:30094@server:*" \
-  --port "30095:30095@server:*" \
-  --port "30097:30097@server:*" \
-  --volume /home2/dwnusa/c20/kafka-on-k3d:/opt/kafka-on-k3d@all
-  # http://localhost:30000
-#   --volume /home2/dwnusa/c20/airflow-with-spark-operator-in-kube-cluster/kafka-on-k3d:/opt/kafka-on-k3d@all
-```
-or kubectl port-forward
-```bash
-kubectl port-forward -n kafka svc/kafka-ui 8080:8080
-# http://localhost:8080
-```
 
 
 ## Create Topic 

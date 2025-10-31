@@ -5,7 +5,12 @@ import random
 from datetime import datetime
 
 # Kafka 설정
-KAFKA_BROKER = 'kafka.kafka.svc.cluster.local:9092' # :30092'  # docker-compose 외부 실행 시
+KAFKA_BROKER = [
+    # 'kafka.kafka.svc.cluster.local:9092' # :30092'  # docker-compose 외부 실행 시
+    'kafka-controller-0.kafka-controller-headless.kafka.svc.cluster.local:9092',
+    'kafka-controller-1.kafka-controller-headless.kafka.svc.cluster.local:9092',
+    'kafka-controller-2.kafka-controller-headless.kafka.svc.cluster.local:9092',
+]
 TOPIC = 'user-events'
 
 # Kafka Producer 인스턴스 생성
