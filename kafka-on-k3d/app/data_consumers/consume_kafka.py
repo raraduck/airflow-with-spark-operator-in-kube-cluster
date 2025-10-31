@@ -17,9 +17,9 @@ def process_message(message):
     elif action == 'logout':
         print(f"🔴 사용자 {message['user_id']}가 로그아웃했습니다.")
     elif action == 'purchase':
-        print(f"💰 사용자 {message['user_id']}가 {message['amount']}원 결제했습니다.")
+        print(f"💰 사용자 {message['user_id']}가 결제했습니다.")
     elif action == 'view_page':
-        print(f"👁️ 사용자 {message['user_id']}가 {message['page']} 페이지를 조회했습니다.")
+        print(f"👁️ 사용자 {message['user_id']}가 페이지를 조회했습니다.")
     else:
         print(f"⚪ 알 수 없는 액션: {message}")
 
