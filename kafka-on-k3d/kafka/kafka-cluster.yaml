@@ -121,8 +121,8 @@ metadata:
     helm.sh/chart: kafka-32.4.3
 type: Opaque
 data:
-  inter-broker-password: "TXpCckIzTTB0MA=="
-  controller-password: "dDZTVnZMa0Fodg=="
+  inter-broker-password: "d3BHSW8xdWFUQw=="
+  controller-password: "MzloZ250N0RpbA=="
 ---
 # Source: kafka/templates/secrets.yaml
 apiVersion: v1
@@ -138,10 +138,10 @@ metadata:
     helm.sh/chart: kafka-32.4.3
 type: Opaque
 data:
-  cluster-id: "OXFTS01JMm1lVUxVQlk0TjNzaGtOaQ=="
-  controller-0-id: "UmNXd0U2VzgzMWpvSUNRUzZBTFBUTQ=="
-  controller-1-id: "WVA5RHQ2akJsQUZPV2RVMjVZNVp2dg=="
-  controller-2-id: "SmJsUkFuSEl6c0h1VVNDY0lkYW5nOQ=="
+  cluster-id: "dmN0WU5laEpqMmZPYWtreHJCa2RYZw=="
+  controller-0-id: "QlpMVzVsdFc5SlVOWHNwSTg1bVVzeg=="
+  controller-1-id: "UWpCZ0Q2SG4xVktPWFdmRWNjdU1yVw=="
+  controller-2-id: "d2FaRVpMMDU4eGtDRU9xTUx1Q3ZQcA=="
 ---
 # Source: kafka/templates/controller-eligible/configmap.yaml
 apiVersion: v1
@@ -159,7 +159,7 @@ metadata:
     app.kubernetes.io/part-of: kafka
 data:
   server.properties: |-
-    advertised.listeners=PLAINTEXT://localhost:30092,INTERNAL://advertised-address-placeholder:9094
+    advertised.listeners=CLIENT://advertised-address-placeholder:9092,INTERNAL://advertised-address-placeholder:9094
     controller.listener.names=CONTROLLER
     controller.quorum.bootstrap.servers=kafka-controller-0.kafka-controller-headless.kafka.svc.cluster.local:9093,kafka-controller-1.kafka-controller-headless.kafka.svc.cluster.local:9093,kafka-controller-2.kafka-controller-headless.kafka.svc.cluster.local:9093
     inter.broker.listener.name=INTERNAL
@@ -281,7 +281,7 @@ spec:
         app.kubernetes.io/part-of: kafka
       annotations:
         checksum/configuration: 9eee640ea39cac503f7b61d124a6b1824adb865d47c98caf04b37fca5d45c1e4
-        checksum/secret: 321474a89b4ec8d41746c0a6a354efcf52d524a859cf2e4cd112e6a8a154c111
+        checksum/secret: 56151188ef8a54b57229ba5cc9f01ed7f58667bed86aa5d9ca72cad7f2be435d
     spec:
       
       automountServiceAccountToken: false

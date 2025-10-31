@@ -5,7 +5,7 @@ import random
 from datetime import datetime
 
 # Kafka 설정
-KAFKA_BROKER = 'localhost:30092'  # docker-compose 외부 실행 시
+KAFKA_BROKER = 'kafka.kafka.svc.cluster.local:9092' # :30092'  # docker-compose 외부 실행 시
 TOPIC = 'user-events'
 
 # Kafka Producer 인스턴스 생성

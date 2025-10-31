@@ -1,0 +1,59 @@
+replicaCount: 3
+
+image:
+  repository: bitnamilegacy/kafka
+  tag: latest
+  pullPolicy: IfNotPresent
+  
+kraft:
+  enabled: true
+  
+zookeeper:
+  enabled: false
+
+controller:
+  replicaCount: 3
+
+# ✅ 리스너 설정 - EXTERNAL에 9092 포트 사용
+listeners:
+  client:
+    protocol: PLAINTEXT
+    port: 9092
+  controller:
+    protocol: PLAINTEXT
+    port: 9093
+  external:
+    protocol: PLAINTEXT
+    port: 9094  # 컨테이너 내부 포트
+
+externalAccess:
+  enabled: true
+  controller:
+    service:
+      type: NodePort
+      nodePorts:
+        - 30092
+        - 30093
+        - 30094
+    domain: localhost
+    # ✅ advertised port를 명시적으로 지정
+    advertisedPorts:
+      - 30092
+      - 30093
+      - 30094
+
+service:
+  type: ClusterIP
+  ports:
+    client: 9092
+
+extraVolumes:
+  - name: kafka-host-data
+    hostPath:
+      path: /opt/kafka-on-k3d
+      type: DirectoryOrCreate
+
+extraVolumeMounts:
+  - name: kafka-host-data
+    mountPath: /mnt/kafka-on-k3d
+    readOnly: false
