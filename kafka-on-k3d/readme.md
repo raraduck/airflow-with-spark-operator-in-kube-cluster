@@ -157,3 +157,16 @@ kafka-topics.sh \
   --replication-factor 1 \
   --partitions 3
 ```
+
+or
+
+```bash
+kubectl run kafka-client --restart='Never'   --image docker.io/bitnamilegacy/kafka:4.0.0   --namespace kafka --command -- sleep infinity
+
+kafka-topics.sh --create \
+  --topic user-events \
+  --bootstrap-server kafka.kafka.svc.cluster.local:9092 \
+  --replication-factor 3 --partitions 1
+
+kafka-topics.sh --list --bootstrap-server kafka.kafka.svc.cluster.local:9092
+```
