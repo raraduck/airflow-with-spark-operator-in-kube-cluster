@@ -21,3 +21,34 @@ listeners:
 
 configurationOverrides:
   log.retention.hours: 24
+#   listener.security.protocol.map: "CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT"
+#   inter.broker.listener.name: CLIENT
+#   listeners: "CLIENT://:9092,EXTERNAL://:9094"
+#   advertised.listeners: "CLIENT://kafka.kafka.svc.cluster.local:9092,EXTERNAL://localhost:30092"
+
+# externalAccess:
+#   enabled: true
+#   controller:
+#     service:
+#       type: NodePort
+#       nodePorts:
+#         - 30092
+#         - 30093
+#         - 30094
+# #     domain: localhost
+# #     advertisedPorts:
+# #       - 30092
+# #       - 30093
+# #       - 30094
+# 
+# #   service:
+# #     type: NodePort
+# #     nodePorts:
+# #       - 30092
+# #       - 30093
+# #       - 30094
+#   autoDiscovery:
+#     enabled: false
+#   broker:
+#     service:
+#       domain: localhost
