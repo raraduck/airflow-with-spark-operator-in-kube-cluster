@@ -32,11 +32,11 @@ def main():
         enable_auto_commit=True,               # 자동 오프셋 커밋 활성화
         group_id='user_events_group',        # 컨슈머 그룹 ID
         value_deserializer=json_deserializer,  # 값 역직렬화 함수
-        consumer_timeout_ms=1000               # 1초 동안 메시지가 없으면 타임아웃 (선택 사항)
+        consumer_timeout_ms=10000               # 1초 동안 메시지가 없으면 타임아웃 (선택 사항)
     )
 
     print("Kafka Consumer 시작. Ctrl+C로 종료.")
-    print("'user_activity' 토픽 메시지 대기 중...")
+    print("'user-events' 토픽 메시지 대기 중...")
 
     try:
         # 메시지 소비 루프
