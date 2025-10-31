@@ -34,6 +34,8 @@ json_df = df.selectExpr("CAST(value AS STRING) as json_str") \
     .select(from_json(col("json_str"), schema).alias("data")) \
     .select("data.*")
 
+print(json_df)
+
 # PostgreSQL에 저장 (기존 내용 덮어쓰기)
 # json_df.write \
 #     .format("jdbc") \
