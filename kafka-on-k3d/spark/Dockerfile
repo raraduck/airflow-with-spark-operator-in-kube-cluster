@@ -1,6 +1,7 @@
 FROM bitnamilegacy/spark:3.5.4
 
 COPY ./jars /opt/bitnami/spark/jars/
+COPY ./jobs /opt/bitnami/spark/jobs/
 
 # # Dockerfile.spark
 # FROM bitnamilegacy/spark:3.4.1
