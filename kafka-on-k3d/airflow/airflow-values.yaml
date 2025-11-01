@@ -1,37 +1,107 @@
+# ------------------------------
+# Airflow Core Image Settings
+# ------------------------------
 images:
   airflow:
     repository: apache/airflow
-    tag: 2.8.1-python3.9
-    pullPolicy: IfNotPresent
+    tag: 3.0.2          # Helm 설치 시 자동으로 가져온 버전
+    pullPolicy: IfNotPresent  # 필요 시 새로 받으려면 Always 로 변경 가능
 
-# images:
-#   airflow:
-#     repository: dwnusa/airflow
-#     tag: v2.8.1-jdk17-pyspark-3.5.5-amd64
-#     pullPolicy: IfNotPresent
-
-  
-dags:
-  persistence:
-    enabled: false
-
+# ------------------------------
+# PostgreSQL (내장 DB) 설정
+# ------------------------------
 postgresql:
   enabled: true
   image:
-    tag: latest
+    tag: latest         # 최신 PostgreSQL 사용
+  persistence:
+    enabled: false      # 로컬 테스트 환경에서는 굳이 PV/PVC 안 씀
 
-
+# ------------------------------
+# DAGs Volume Mounts
+# ------------------------------
+dags:
+  persistence:
+    enabled: false      # PVC 대신 hostPath 직접 연결
+  gitSync:
+    enabled: false      # Git Sync 기능 비활성화
 
 extraVolumes:
   - name: airflow-dags
     hostPath:
-      path: /opt/kafka-on-k3d/airflow/dags
+      path: /opt/kafka-on-k3d/airflow/dags   # 호스트 머신 경로
       type: DirectoryOrCreate
 
 extraVolumeMounts:
   - name: airflow-dags
-    mountPath: /opt/airflow/dags
+    mountPath: /opt/airflow/dags             # 컨테이너 내부 DAG 폴더
     readOnly: false
+
+# ------------------------------
+# Webserver NodePort 설정
+# ------------------------------
+webserver:
+  service:
+    type: NodePort
+    ports:
+      - name: airflow-ui
+        port: 8080
+        nodePort: 30097
+
+# ------------------------------
+# 기타 (Scheduler, Triggerer 등 기본값 유지)
+# ------------------------------
+scheduler:
+  replicas: 1
+triggerer:
+  replicas: 1
+workers:
+  replicas: 1
+
+# ------------------------------
+# (선택) 이미지 캐시 무시하고 항상 새로 pull 하려면 아래 활성화
+# ------------------------------
+# images:
+#   airflow:
+#     repository: apache/airflow
+#     tag: 3.0.2
+#     pullPolicy: Always
+
+
+# images:
+#   airflow:
+#     repository: apache/airflow
+#     tag: 2.8.1-python3.9
+#     pullPolicy: IfNotPresent
+
+# # images:
+# #   airflow:
+# #     repository: dwnusa/airflow
+# #     tag: v2.8.1-jdk17-pyspark-3.5.5-amd64
+# #     pullPolicy: IfNotPresent
+
+  
+# dags:
+#   persistence:
+#     enabled: false
+
+# postgresql:
+#   enabled: true
+#   image:
+#     tag: latest
+
+
+
+# extraVolumes:
+#   - name: airflow-dags
+#     hostPath:
+#       path: /opt/kafka-on-k3d/airflow/dags
+#       type: DirectoryOrCreate
+
+# extraVolumeMounts:
+#   - name: airflow-dags
+#     mountPath: /opt/airflow/dags
+#     readOnly: false
 
 
   # Already installed in Dockerfile 
