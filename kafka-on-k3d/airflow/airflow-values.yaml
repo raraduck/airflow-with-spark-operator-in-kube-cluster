@@ -24,8 +24,8 @@ dags:
   persistence:
     enabled: true
     existingClaim: airflow-dags  # ✅ PVC 이름 지정
-  gitSync:
-    enabled: false      # Git Sync 기능 비활성화
+  # gitSync:
+  #   enabled: false      # Git Sync 기능 비활성화
 
 
 # ------------------------------
