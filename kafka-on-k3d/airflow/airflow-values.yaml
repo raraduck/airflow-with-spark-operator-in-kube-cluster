@@ -40,7 +40,16 @@ extraVolumeMounts:
 # ------------------------------
 # Webserver NodePort 설정
 # ------------------------------
-webserver:
+# webserver:
+#   service:
+#     type: NodePort
+#     ports:
+#       - name: airflow-ui
+#         port: 8080
+#         nodePort: 30097
+
+# ⚠️ Airflow 3.0에서는 webserver → api-server 로 이름 변경됨
+api:
   service:
     type: NodePort
     ports:
