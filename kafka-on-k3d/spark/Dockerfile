@@ -6,5 +6,5 @@ COPY ./jars /opt/bitnami/spark/jars/
 # FROM bitnamilegacy/spark:3.4.1
 # COPY ./spark/jars /opt/bitnami/spark/jars/
 # USER root
-# RUN pip install python-dotenv pyspark pandas numpy matplotlib scikit-learn kafka-python
+RUN pip install python-dotenv pyspark pandas numpy matplotlib scikit-learn kafka-python
 # USER 1001
