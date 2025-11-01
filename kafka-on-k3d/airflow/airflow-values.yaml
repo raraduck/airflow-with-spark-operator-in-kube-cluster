@@ -1,8 +1,8 @@
 # ------------------------------
 # Airflow Core Image Settings
 # ------------------------------
-images:
-  airflow:
+airflow:
+  image:
     repository: apache/airflow
     tag: 3.0.2          # Helm 설치 시 자동으로 가져온 버전
     pullPolicy: IfNotPresent  # 필요 시 새로 받으려면 Always 로 변경 가능
