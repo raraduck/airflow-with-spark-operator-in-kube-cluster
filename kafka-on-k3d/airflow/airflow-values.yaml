@@ -1,13 +1,15 @@
 images:
   airflow:
-    repository: dwnusa/airflow
-    tag: v2.8.1-jdk17-pyspark-3.5.5-amd64
+    repository: apache/airflow
+    tag: 2.8.1-python3.9
     pullPolicy: IfNotPresent
 
-  # Already installed in Dockerfile 
-  # extraPipPackages:
-  #   - apache-airflow-providers-apache-spark
-  #   - apache-airflow-providers-cncf-kubernetes
+# images:
+#   airflow:
+#     repository: dwnusa/airflow
+#     tag: v2.8.1-jdk17-pyspark-3.5.5-amd64
+#     pullPolicy: IfNotPresent
+
   
 dags:
   persistence:
@@ -18,14 +20,6 @@ postgresql:
   image:
     tag: latest
 
-
-# web:
-#   service:
-#     type: NodePort
-#     ports:
-#       - name: airflow-ui
-#         port: 8080
-#         nodePort: 30097
 
 
 extraVolumes:
@@ -38,3 +32,17 @@ extraVolumeMounts:
   - name: airflow-dags
     mountPath: /opt/airflow/dags
     readOnly: false
+
+
+  # Already installed in Dockerfile 
+  # extraPipPackages:
+  #   - apache-airflow-providers-apache-spark
+  #   - apache-airflow-providers-cncf-kubernetes
+
+# web:
+#   service:
+#     type: NodePort
+#     ports:
+#       - name: airflow-ui
+#         port: 8080
+#         nodePort: 30097
