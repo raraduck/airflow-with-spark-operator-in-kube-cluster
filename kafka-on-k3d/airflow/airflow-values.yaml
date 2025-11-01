@@ -1,7 +1,7 @@
 images:
   airflow:
     repository: dwnusa/airflow
-    tag: v3.1.0-jdk17-pyspark-3.5.5-amd64
+    tag: v2.8.1-jdk17-pyspark-3.5.5-amd64
     pullPolicy: IfNotPresent
 
   # Already installed in Dockerfile 
@@ -19,15 +19,13 @@ postgresql:
     tag: latest
 
 
-webserver:
+web:
   service:
     type: NodePort
     ports:
       - name: airflow-ui
         port: 8080
         nodePort: 30097
-  command: ["airflow"]
-  args: ["webserver"]
 
 
 extraVolumes:
