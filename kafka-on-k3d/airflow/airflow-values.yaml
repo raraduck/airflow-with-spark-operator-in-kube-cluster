@@ -19,13 +19,13 @@ postgresql:
     tag: latest
 
 
-web:
-  service:
-    type: NodePort
-    ports:
-      - name: airflow-ui
-        port: 8080
-        nodePort: 30097
+# web:
+#   service:
+#     type: NodePort
+#     ports:
+#       - name: airflow-ui
+#         port: 8080
+#         nodePort: 30097
 
 
 extraVolumes:
