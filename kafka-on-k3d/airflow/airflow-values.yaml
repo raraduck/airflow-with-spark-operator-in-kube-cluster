@@ -19,7 +19,7 @@ postgresql:
     tag: latest
 
 
-web:
+webserver:
   service:
     type: NodePort
     ports:
