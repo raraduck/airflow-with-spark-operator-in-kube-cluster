@@ -110,8 +110,7 @@ helm upgrade --install airflow apache-airflow/airflow  \
     --set dags.persistence.existingClaim=airflow-dags \
     --set airflow.extraPipPackages="{apache-airflow-providers-apache-spark,apache-airflow-providers-cncf-kubernetes}" \
     --set postgresql.image.tag=latest
-    # --set persistence.enabled=true \
-    # --set persistence.existingClaim=airflow-data \
+    
 kubectl patch svc airflow-api-server -n airflow \
   -p '{"spec": {"type": "NodePort", "ports": [{"port": 8080, "targetPort": 8080, "nodePort": 30097}]}}'
 
