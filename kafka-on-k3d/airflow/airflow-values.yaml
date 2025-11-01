@@ -27,6 +27,16 @@ dags:
     enabled: false      # Git Sync 기능 비활성화
 
 
+extraVolumes:
+  - name: airflow-dags
+    hostPath:
+      path: /opt/kafka-on-k3d/airflow/dags   # 호스트 머신 경로
+      type: DirectoryOrCreate
+
+extraVolumeMounts:
+  - name: airflow-dags
+    mountPath: /mnt/airflow/dags             # 컨테이너 내부 DAG 폴더
+    readOnly: false
 
 # ------------------------------
 # Webserver NodePort 설정
@@ -47,15 +57,6 @@ webserver:
       - name: airflow-ui
         port: 8080
         nodePort: 30097
-  extraVolumes:
-    - name: airflow-dags
-      hostPath:
-        path: /opt/kafka-on-k3d/airflow/dags   # 호스트 머신 경로
-        type: DirectoryOrCreate
-  extraVolumeMounts:
-    - name: airflow-dags
-      mountPath: /opt/airflow/dags             # 컨테이너 내부 DAG 폴더
-      readOnly: false
 # ------------------------------
 # 기타 (Scheduler, Triggerer 등 기본값 유지)
 # ------------------------------
