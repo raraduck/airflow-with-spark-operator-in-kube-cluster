@@ -26,11 +26,6 @@ dags:
   gitSync:
     enabled: false      # Git Sync 기능 비활성화
 
-extraVolumes:
-  - name: airflow-dags
-    hostPath:
-      path: /opt/kafka-on-k3d/airflow/dags   # 호스트 머신 경로
-      type: DirectoryOrCreate
 
 
 # ------------------------------
@@ -52,6 +47,11 @@ webserver:
       - name: airflow-ui
         port: 8080
         nodePort: 30097
+  extraVolumes:
+    - name: airflow-dags
+      hostPath:
+        path: /opt/kafka-on-k3d/airflow/dags   # 호스트 머신 경로
+        type: DirectoryOrCreate
   extraVolumeMounts:
     - name: airflow-dags
       mountPath: /opt/airflow/dags             # 컨테이너 내부 DAG 폴더
@@ -61,22 +61,10 @@ webserver:
 # ------------------------------
 scheduler:
   replicas: 1
-  extraVolumeMounts:
-    - name: airflow-dags
-      mountPath: /opt/airflow/dags
-      readOnly: false
 triggerer:
   replicas: 1
-  extraVolumeMounts:
-    - name: airflow-dags
-      mountPath: /opt/airflow/dags
-      readOnly: false
 workers:
   replicas: 1
-  extraVolumeMounts:
-    - name: airflow-dags
-      mountPath: /opt/airflow/dags
-      readOnly: false
 
 # ------------------------------
 # (선택) 이미지 캐시 무시하고 항상 새로 pull 하려면 아래 활성화
