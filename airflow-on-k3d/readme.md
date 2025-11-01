@@ -40,8 +40,7 @@ docker exec -it k3d-airflow-cluster-agent-0 sh
 # -rw-r--r-- 1 2585 1999  47 Oct 14 09:20 data.csv
 # drwxr-xr-x 2 2585 1999 512 Oct 14 09:18 logs
 ```
-
-## 3. Create PV and PVC for empty volume mount
+## 3. Create PV and PVC for empty volume mount (PV, PVC are not necessarily required, extraVolume can be used instead)
 - pv-airflow-dag.yaml
 ```yaml
 apiVersion: v1
@@ -164,4 +163,46 @@ http://127.0.0.1:8080/
 k3d cluster list
 k3d cluster delete mycluster
 k3d cluster delete --all
+```
+
+## 8. extraVolumes
+```yaml
+images:
+  airflow:
+    repository: dwnusa/airflow
+    tag: v3.1.0-jdk17-pyspark-3.5.5-amd64
+    pullPolicy: IfNotPresent
+
+  # Already installed in Dockerfile 
+  # extraPipPackages:
+  #   - apache-airflow-providers-apache-spark
+  #   - apache-airflow-providers-cncf-kubernetes
+  
+dags:
+  persistence:
+    enabled: false
+
+postgresql:
+  enabled: true
+  image:
+    tag: latest
+
+webserver:
+  service:
+    type: NodePort
+    ports:
+      - name: airflow-ui
+        port: 8080
+        nodePort: 30097
+
+extraVolumes:
+  - name: airflow-dags
+    hostPath:
+      path: /opt/kafka-on-k3d/airflow/dags
+      type: DirectoryOrCreate
+
+extraVolumeMounts:
+  - name: airflow-dags
+    mountPath: /opt/airflow/dags
+    readOnly: false
 ```

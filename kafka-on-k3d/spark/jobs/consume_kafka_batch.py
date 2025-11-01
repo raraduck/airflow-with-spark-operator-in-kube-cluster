@@ -12,7 +12,7 @@ schema = StructType() \
 
 # Spark 세션
 spark = SparkSession.builder \
-    .appName("KafkaToPostgresBatch") \
+    .appName("KafkaBatch") \
     .getOrCreate()
 
 # Kafka에서 데이터 배치로 읽기 (처음부터 전체)
