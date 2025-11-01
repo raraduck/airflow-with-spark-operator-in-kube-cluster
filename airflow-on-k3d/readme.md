@@ -118,7 +118,9 @@ or
 helm upgrade --install airflow apache-airflow/airflow \
   --namespace airflow \
   --create-namespace \
-  -f airflow-values.yaml
+  -f airflow-values.yaml \
+  --set webserver.command='{airflow}' \
+  --set webserver.args='{webserver}'
 ```
 
 ## 5. Open api server 

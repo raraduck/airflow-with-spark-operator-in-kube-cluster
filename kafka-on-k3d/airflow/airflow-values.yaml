@@ -26,6 +26,8 @@ webserver:
       - name: airflow-ui
         port: 8080
         nodePort: 30097
+  command: ["airflow"]
+  args: ["webserver"]
 
 
 extraVolumes:
