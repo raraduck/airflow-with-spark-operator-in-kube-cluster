@@ -22,21 +22,11 @@ postgresql:
 # ------------------------------
 dags:
   persistence:
-    enabled: false      # PVC 대신 hostPath 직접 연결
+    enabled: true
+    existingClaim: airflow-dags  # ✅ PVC 이름 지정
   gitSync:
     enabled: false      # Git Sync 기능 비활성화
 
-
-extraVolumes:
-  - name: airflow-dags
-    hostPath:
-      path: /opt/kafka-on-k3d/airflow/dags   # 호스트 머신 경로
-      type: DirectoryOrCreate
-
-extraVolumeMounts:
-  - name: airflow-dags
-    mountPath: /mnt/airflow/dags             # 컨테이너 내부 DAG 폴더
-    readOnly: false
 
 # ------------------------------
 # Webserver NodePort 설정
@@ -50,13 +40,13 @@ extraVolumeMounts:
 #         nodePort: 30097
 
 # ⚠️ Airflow 3.0에서는 webserver → api-server 로 이름 변경됨
-webserver:
-  service:
-    type: NodePort
-    ports:
-      - name: airflow-ui
-        port: 8080
-        nodePort: 30097
+# webserver:
+#   service:
+#     type: NodePort
+#     ports:
+#       - name: airflow-ui
+#         port: 8080
+#         nodePort: 30097
 # ------------------------------
 # 기타 (Scheduler, Triggerer 등 기본값 유지)
 # ------------------------------
@@ -101,16 +91,16 @@ workers:
 
 
 
-extraVolumes:
-  - name: airflow-dags
-    hostPath:
-      path: /opt/kafka-on-k3d/airflow/dags
-      type: DirectoryOrCreate
+# extraVolumes:
+#   - name: airflow-dags
+#     hostPath:
+#       path: /opt/kafka-on-k3d/airflow/dags
+#       type: DirectoryOrCreate
 
-extraVolumeMounts:
-  - name: airflow-dags
-    mountPath: /opt/airflow/dags
-    readOnly: false
+# extraVolumeMounts:
+#   - name: airflow-dags
+#     mountPath: /opt/airflow/dags
+#     readOnly: false
 
 
   # Already installed in Dockerfile 

@@ -55,7 +55,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-path
   hostPath:
-    path: /opt/airflow/dags
+    path: /opt/airflow/dags # /opt/kafka-on-k3d/airflow/dags
   claimRef:
     namespace: airflow
     name: airflow-dags
