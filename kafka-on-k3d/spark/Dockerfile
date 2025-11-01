@@ -2,7 +2,7 @@ FROM docker.io/library/spark:3.5.4
 WORKDIR /opt/spark-data
 COPY jobs /opt/spark-data/jobs/
 COPY jars /opt/bitnami/spark/jars/
-CMD ["spark-submit", "/opt/spark-data/jobs/analyze_csv.py"]
+CMD ["spark-submit", "/opt/spark-data/jobs/consume_kafka_batch.py"]
 
 
 
