@@ -22,10 +22,11 @@ postgresql:
 # ------------------------------
 dags:
   persistence:
-    enabled: true
-    existingClaim: airflow-dags  # ✅ PVC 이름 지정
-  # gitSync:
-  #   enabled: false      # Git Sync 기능 비활성화
+    enabled: false
+    # enabled: true
+    # existingClaim: airflow-dags  # ✅ PVC 이름 지정
+  gitSync:
+    enabled: false      # Git Sync 기능 비활성화
 
 
 # ------------------------------
@@ -91,16 +92,16 @@ workers:
 
 
 
-# extraVolumes:
-#   - name: airflow-dags
-#     hostPath:
-#       path: /opt/kafka-on-k3d/airflow/dags
-#       type: DirectoryOrCreate
+extraVolumes:
+  - name: airflow-dags
+    hostPath:
+      path: /opt/kafka-on-k3d/airflow/dags
+      type: DirectoryOrCreate
 
-# extraVolumeMounts:
-#   - name: airflow-dags
-#     mountPath: /opt/airflow/dags
-#     readOnly: false
+extraVolumeMounts:
+  - name: airflow-dags
+    mountPath: /opt/airflow/dags
+    readOnly: false
 
 
   # Already installed in Dockerfile 
