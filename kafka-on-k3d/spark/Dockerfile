@@ -1,7 +1,8 @@
-FROM docker.io/library/spark:4.0.0
+FROM docker.io/library/spark:3.5.4
 WORKDIR /opt/spark-data
-COPY jobs/consume_kafka_batch.py .
-CMD ["spark-submit", "/opt/spark-data/analyze_csv.py"]
+COPY jobs /opt/spark-data/jobs/
+COPY jars /opt/bitnami/spark/jars/
+CMD ["spark-submit", "/opt/spark-data/jobs/analyze_csv.py"]
 
 
 
