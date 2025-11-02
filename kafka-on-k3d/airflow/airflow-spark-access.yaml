@@ -5,7 +5,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: spark-operator-controller   # ✅ Spark Operator의 핵심 Role
+  name: view
 subjects:
   - kind: ServiceAccount
     name: airflow-worker            # ✅ Airflow worker pod가 사용하는 계정
