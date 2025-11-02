@@ -32,9 +32,9 @@ with DAG(
         config_file="/opt/airflow/.kube/config",
         in_cluster=False,
         namespace="spark-operator",
-        # application_file="/opt/airflow/dags/spark-consume.yaml", # /opt/airflow/dags/spark-consume.yaml
-        application_file=r"/opt/airflow/dags/spark-consume.yaml",  # raw string
-        do_xcom_push=False,
+        application_file="spark-consume.yaml", # /opt/airflow/dags/spark-consume.yaml
+        # application_file=r"/opt/airflow/dags/spark-consume.yaml",  # raw string
+        # do_xcom_push=False,
         # volumes=[
         #     k8s.V1Volume(
         #         name='airflow-dags',
