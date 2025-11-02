@@ -2,6 +2,7 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import SparkKubernetesOperator
 from airflow.operators.python import PythonOperator
 from datetime import datetime
+from kubernetes.client import models as k8s
 
 def say_hello():
     print("👋 Hello from Airflow DAG using SparkKubernetesOperator!")
@@ -31,7 +32,22 @@ with DAG(
         config_file="/opt/airflow/.kube/config",
         in_cluster=False,
         namespace="spark-operator",
-        application_file="/opt/airflow/dags/spark-consume.yaml" # /opt/airflow/dags/spark-consume.yaml
+        application_file="/opt/airflow/dags/spark-consume.yaml", # /opt/airflow/dags/spark-consume.yaml
+        volumes=[
+            k8s.V1Volume(
+                name='airflow-dags',
+                persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(
+                    claim_name='airflow-dags'   # ✅ PVC 이름 확인 필요
+                )
+            )
+        ],
+        volume_mounts=[
+            k8s.V1VolumeMount(
+                name='airflow-dags',
+                mount_path='/opt/airflow/dags',
+                read_only=False
+            )
+        ]
     )
 
     hello_task >> spark_submit
