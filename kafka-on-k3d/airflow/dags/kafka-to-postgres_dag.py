@@ -30,7 +30,7 @@ with DAG(
     spark_submit = SparkKubernetesOperator(
         task_id="submit_spark_application" ,
         in_cluster=True,              # ✅ 클러스터 내부 ServiceAccount로 인증
-        namespace="airflow", # "spark-operator",
+        namespace="default", # "spark-operator",
         application_file="spark-consume.yaml", # /opt/airflow/dags/spark-consume.yaml
     )
 
