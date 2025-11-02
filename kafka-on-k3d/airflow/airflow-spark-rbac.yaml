@@ -5,7 +5,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: spark-operator-role     # Spark Operator 설치 시 자동 생성된 ClusterRole
+  name: spark-operator-controller   # ✅ Spark Operator의 핵심 Role
 subjects:
   - kind: ServiceAccount
     name: airflow-worker        # Airflow가 SparkApplication을 생성할 때 쓰는 계정
