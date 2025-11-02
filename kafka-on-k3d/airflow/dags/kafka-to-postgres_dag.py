@@ -1,13 +1,11 @@
 from airflow import DAG
-from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-# from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
-from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
-from datetime import datetime
+from airflow.providers.apache.spark.operators.spark_kubernetes import SparkKubernetesOperator
+from airflow.providers.apache.spark.operators.spark_kubernetes import SparkKubernetesSensor
 from airflow.operators.python import PythonOperator
-from kubernetes.client import models as k8s
+from datetime import datetime
 
 def say_hello():
-    print("👋 Hello from Airflow DAG!")
+    print("👋 Hello from Airflow DAG using SparkKubernetesOperator!")
     return "DAG executed successfully."
 
 default_args = {
@@ -16,65 +14,33 @@ default_args = {
 }
 
 with DAG(
-    dag_id='spark_submit_example',
+    dag_id='spark_kubernetes_example',
     default_args=default_args,
     schedule=None,
     catchup=False,
 ) as dag:
 
+    # (1) 단순 파이썬 Task
     hello_task = PythonOperator(
-        task_id="say_hello",
+        task_id='say_hello',
         python_callable=say_hello,
     )
 
-
-
-    submit_spark_job = KubernetesPodOperator(
-        task_id='submit_spark_operator_job',
-        name='spark-submit-job',
-        namespace='airflow',
-        service_account_name='spark-operator-spark', #'airflow-kubectl',  # ✅ RBAC 권한 있는 계정 지정
-        image='bitnami/kubectl:latest',  # kubectl CLI가 들어있는 lightweight 이미지
-        cmds=['/bin/sh', '-c'],
-        arguments=['kubectl apply -f /opt/airflow/dags/spark-consume.yaml'],
-        # env_vars={
-        #     'KUBECONFIG': '/root/.kube/config'
-        # },
-        get_logs=True,
-        volumes=[
-            k8s.V1Volume(
-                name='airflow-dags',
-                persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(
-                    claim_name='airflow-dags'   # ✅ PVC 이름 확인 필요
-                )
-            )
-        ],
-        volume_mounts=[
-            k8s.V1VolumeMount(
-                name='airflow-dags',
-                mount_path='/opt/airflow/dags',
-                read_only=False
-            )
-        ]
+    # (2) Spark Application 생성 (SparkKubernetesOperator)
+    spark_submit = SparkKubernetesOperator(
+        task_id='submit_spark_application',
+        namespace='default',   # SparkApplication이 실행될 namespace (spark-operator와 동일)
+        application_file='/opt/airflow/dags/spark-consume.yaml',  # ✅ SparkApplication YAML 파일 경로
+        kubernetes_conn_id='kubernetes_default',  # Airflow가 기본 제공하는 Kubernetes 연결
+        do_xcom_push=True,  # SparkApplication 상태를 XCom으로 반환
     )
 
+    # (3) Spark Application 상태 모니터링 (SparkKubernetesSensor)
+    monitor_spark = SparkKubernetesSensor(
+        task_id='monitor_spark_application',
+        namespace='default',
+        application_name="{{ task_instance.xcom_pull(task_ids='submit_spark_application')['metadata']['name'] }}",
+        kubernetes_conn_id='kubernetes_default',
+    )
 
-    # 실행 순서 (단일 Task이므로 그냥 등록)
-    hello_task >> submit_spark_job
-
-    # spark_submit_task = SparkSubmitOperator(
-    #     task_id='submit_spark_job',
-    #     application='/opt/bitnami/spark/jobs/consume_kafka_to_postgres_batch.py',
-    #     conn_id='spark-default',
-    #     conf={
-    #         'spark.master': 'spark://spark-master:7077',
-    #     },
-    #     jars=','.join([
-    #         '/opt/bitnami/spark/jars/spark-sql-kafka-0-10_2.12-3.5.4.jar',
-    #         '/opt/bitnami/spark/jars/kafka-clients-3.6.1.jar',
-    #         '/opt/bitnami/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.4.jar',
-    #         '/opt/bitnami/spark/jars/commons-pool2-2.11.1.jar',
-    #         '/opt/bitnami/spark/jars/postgresql-42.7.1.jar',
-    #     ]),
-    #     verbose=True,
-    # )
+    hello_task >> spark_submit >> monitor_spark
