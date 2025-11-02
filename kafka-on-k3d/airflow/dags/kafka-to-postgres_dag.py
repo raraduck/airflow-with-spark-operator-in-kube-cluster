@@ -32,22 +32,24 @@ with DAG(
         config_file="/opt/airflow/.kube/config",
         in_cluster=False,
         namespace="spark-operator",
-        application_file="/opt/airflow/dags/spark-consume.yaml", # /opt/airflow/dags/spark-consume.yaml
-        volumes=[
-            k8s.V1Volume(
-                name='airflow-dags',
-                persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(
-                    claim_name='airflow-dags'   # ✅ PVC 이름 확인 필요
-                )
-            )
-        ],
-        volume_mounts=[
-            k8s.V1VolumeMount(
-                name='airflow-dags',
-                mount_path='/opt/airflow/dags',
-                read_only=False
-            )
-        ]
+        # application_file="/opt/airflow/dags/spark-consume.yaml", # /opt/airflow/dags/spark-consume.yaml
+        application_file=r"/opt/airflow/dags/spark-consume.yaml",  # raw string
+        do_xcom_push=False,
+        # volumes=[
+        #     k8s.V1Volume(
+        #         name='airflow-dags',
+        #         persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(
+        #             claim_name='airflow-dags'   # ✅ PVC 이름 확인 필요
+        #         )
+        #     )
+        # ],
+        # volume_mounts=[
+        #     k8s.V1VolumeMount(
+        #         name='airflow-dags',
+        #         mount_path='/opt/airflow/dags',
+        #         read_only=False
+        #     )
+        # ]
     )
 
     hello_task >> spark_submit
