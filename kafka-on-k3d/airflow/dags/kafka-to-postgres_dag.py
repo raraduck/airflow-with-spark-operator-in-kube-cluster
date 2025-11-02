@@ -36,10 +36,21 @@ with DAG(
         image='bitnami/kubectl:latest',  # kubectl CLI가 들어있는 lightweight 이미지
         cmds=['/bin/sh', '-c'],
         arguments=['kubectl apply -f /opt/airflow/dags/spark-consume.yaml'],
-        env_vars={
-            'KUBECONFIG': '/root/.kube/config'
-        },
+        # env_vars={
+        #     'KUBECONFIG': '/root/.kube/config'
+        # },
         get_logs=True,
+        # ✅ DAG PVC를 직접 마운트
+        volumes=[{
+            'name': 'airflow-dags',
+            'persistentVolumeClaim': {
+                'claimName': 'airflow-dags'
+            }
+        }],
+        volume_mounts=[{
+            'name': 'airflow-dags',
+            'mountPath': '/opt/airflow/dags'
+        }]
     )
 
 
