@@ -5,12 +5,12 @@ images:
   airflow:
     repository: dwnusa/airflow
     tag: v3.0.2-jdk17-pyspark-3.5.5-amd64
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
 # images:
 #   airflow:
 #     repository: apache/airflow
 #     tag: 3.0.2
-#     pullPolicy: IfNotPresent
+#     pullPolicy: Always
 
 # airflow:
 #   extraPipPackages:
