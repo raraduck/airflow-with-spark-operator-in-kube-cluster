@@ -1,12 +1,22 @@
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: airflow-spark-default-access
+rules:
+  - apiGroups: ["sparkoperator.k8s.io"]
+    resources: ["sparkapplications", "scheduledsparkapplications"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: airflow-spark-access
+  name: airflow-worker-spark-default-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: view
+  name: airflow-spark-default-access
 subjects:
   - kind: ServiceAccount
-    name: airflow-worker            # ✅ Airflow worker pod가 사용하는 계정
-    namespace: airflow              # ✅ Airflow namespace
+    name: airflow-worker
+    namespace: airflow   # ✅ Airflow의 네임스페이스

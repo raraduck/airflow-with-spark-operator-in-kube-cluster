@@ -29,10 +29,8 @@ with DAG(
     # (2) Spark Application 생성 (SparkKubernetesOperator)
     spark_submit = SparkKubernetesOperator(
         task_id="submit_spark_application" ,
-        # config_file="/opt/airflow/.kube/config",
-        # in_cluster=False,
         in_cluster=True,              # ✅ 클러스터 내부 ServiceAccount로 인증
-        namespace="airflow", # "spark-operator",
+        namespace="default", # "spark-operator",
         application_file="spark-consume.yaml", # /opt/airflow/dags/spark-consume.yaml
         # application_file=r"/opt/airflow/dags/spark-consume.yaml",  # raw string
         # do_xcom_push=False,

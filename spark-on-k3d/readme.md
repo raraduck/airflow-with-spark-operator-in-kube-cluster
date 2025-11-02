@@ -16,7 +16,7 @@ k3d cluster create spark-cluster \
 ```
 - ex)
 ```bash
-k3d cluster create spark-cluster \
+k3d cluster create cluster \
     --agents 3 \
     --port "30092:30092@server:*" \
     --port "30093:30093@server:*" \
