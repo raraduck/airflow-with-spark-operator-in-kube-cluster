@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: airflow-to-sparkoperator-access
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: spark-operator-role     # Spark Operator 설치 시 자동 생성된 ClusterRole
+subjects:
+  - kind: ServiceAccount
+    name: airflow-worker        # Airflow가 SparkApplication을 생성할 때 쓰는 계정
+    namespace: airflow
