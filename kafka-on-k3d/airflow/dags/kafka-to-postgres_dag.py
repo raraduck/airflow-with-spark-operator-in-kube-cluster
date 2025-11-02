@@ -30,8 +30,15 @@ with DAG(
     spark_submit = SparkKubernetesOperator(
         task_id="submit_spark_application" ,
         in_cluster=True,              # ✅ 클러스터 내부 ServiceAccount로 인증
-        namespace="spark-operator", # "spark-operator",
+        namespace="airflow", # "spark-operator",
         application_file="spark-consume.yaml", # /opt/airflow/dags/spark-consume.yaml
+    )
+
+    hello_task >> spark_submit
+
+
+
+    
         # application_file=r"/opt/airflow/dags/spark-consume.yaml",  # raw string
         # do_xcom_push=False,
         # volumes=[
@@ -49,6 +56,3 @@ with DAG(
         #         read_only=False
         #     )
         # ]
-    )
-
-    hello_task >> spark_submit
