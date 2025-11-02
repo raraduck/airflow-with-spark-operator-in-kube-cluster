@@ -33,7 +33,7 @@ with DAG(
         task_id='submit_spark_operator_job',
         name='spark-submit-job',
         namespace='airflow',
-        service_account_name='airflow-kubectl',  # ✅ RBAC 권한 있는 계정 지정
+        service_account_name='spark-operator-spark', #'airflow-kubectl',  # ✅ RBAC 권한 있는 계정 지정
         image='bitnami/kubectl:latest',  # kubectl CLI가 들어있는 lightweight 이미지
         cmds=['/bin/sh', '-c'],
         arguments=['kubectl apply -f /opt/airflow/dags/spark-consume.yaml'],
