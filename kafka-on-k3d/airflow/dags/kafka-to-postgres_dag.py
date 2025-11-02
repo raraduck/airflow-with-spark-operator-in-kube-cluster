@@ -4,6 +4,7 @@ from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOpe
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 from datetime import datetime
 from airflow.operators.python import PythonOperator
+from kubernetes.client import models as k8s
 
 def say_hello():
     print("👋 Hello from Airflow DAG!")
@@ -40,17 +41,21 @@ with DAG(
         #     'KUBECONFIG': '/root/.kube/config'
         # },
         get_logs=True,
-        # ✅ DAG PVC를 직접 마운트
-        volumes=[{
-            'name': 'airflow-dags',
-            'persistentVolumeClaim': {
-                'claimName': 'airflow-dags'
-            }
-        }],
-        volume_mounts=[{
-            'name': 'airflow-dags',
-            'mountPath': '/opt/airflow/dags'
-        }]
+        volumes=[
+            k8s.V1Volume(
+                name='airflow-dags',
+                persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(
+                    claim_name='airflow-dags'   # ✅ PVC 이름 확인 필요
+                )
+            )
+        ],
+        volume_mounts=[
+            k8s.V1VolumeMount(
+                name='airflow-dags',
+                mount_path='/opt/airflow/dags',
+                read_only=False
+            )
+        ]
     )
 
 
