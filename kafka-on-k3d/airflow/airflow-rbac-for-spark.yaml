@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: airflow-kubectl
+  namespace: airflow
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: airflow-kubectl-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  # Spark Operator 설치 시 생성된 Role을 재사용 (보통 이름은 'spark-operator-role')
+  name: spark-operator-role
+subjects:
+  - kind: ServiceAccount
+    name: airflow-kubectl
+    namespace: airflow
