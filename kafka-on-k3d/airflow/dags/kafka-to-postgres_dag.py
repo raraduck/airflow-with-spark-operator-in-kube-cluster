@@ -31,7 +31,7 @@ with DAG(
         config_file="/opt/airflow/.kube/config",
         in_cluster=False,
         namespace="spark-operator",
-        application_file="spark-pi.yaml" # /opt/airflow/dags/spark-consume.yaml
+        application_file="/opt/airflow/dags/spark-consume.yaml" # /opt/airflow/dags/spark-consume.yaml
     )
 
     hello_task >> spark_submit
