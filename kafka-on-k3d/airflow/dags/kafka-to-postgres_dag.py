@@ -27,6 +27,25 @@ with DAG(
     )
 
 
+
+    submit_spark_job = KubernetesPodOperator(
+        task_id='submit_spark_operator_job',
+        name='spark-submit-job',
+        namespace='airflow',
+        service_account_name='airflow-kubectl',  # ✅ RBAC 권한 있는 계정 지정
+        image='bitnami/kubectl:latest',  # kubectl CLI가 들어있는 lightweight 이미지
+        cmds=['/bin/sh', '-c'],
+        arguments=['kubectl apply -f /opt/airflow/dags/spark-consume.yaml'],
+        env_vars={
+            'KUBECONFIG': '/root/.kube/config'
+        },
+        get_logs=True,
+    )
+
+
+    # 실행 순서 (단일 Task이므로 그냥 등록)
+    hello_task >> submit_spark_job
+
     # spark_submit_task = SparkSubmitOperator(
     #     task_id='submit_spark_job',
     #     application='/opt/bitnami/spark/jobs/consume_kafka_to_postgres_batch.py',
@@ -43,20 +62,3 @@ with DAG(
     #     ]),
     #     verbose=True,
     # )
-
-    submit_spark_job = KubernetesPodOperator(
-        task_id='submit_spark_operator_job',
-        name='spark-submit-job',
-        namespace='airflow',
-        image='bitnami/kubectl:latest',  # kubectl CLI가 들어있는 lightweight 이미지
-        cmds=['/bin/sh', '-c'],
-        arguments=['kubectl apply -f /opt/airflow/dags/spark-consume.yaml'],
-        env_vars={
-            'KUBECONFIG': '/root/.kube/config'
-        },
-        get_logs=True,
-    )
-
-
-    # 실행 순서 (단일 Task이므로 그냥 등록)
-    hello_task >> submit_spark_job
