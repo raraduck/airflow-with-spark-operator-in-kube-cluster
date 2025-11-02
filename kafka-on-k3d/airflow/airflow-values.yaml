@@ -12,10 +12,10 @@ images:
 #     tag: 3.0.2
 #     pullPolicy: IfNotPresent
 
-airflow:
-  extraPipPackages:
-    - apache-airflow-providers-apache-spark
-    - apache-airflow-providers-cncf-kubernetes
+# airflow:
+#   extraPipPackages:
+#     - apache-airflow-providers-apache-spark
+#     - apache-airflow-providers-cncf-kubernetes
 # ------------------------------
 # PostgreSQL (내장 DB) 설정
 # ------------------------------
