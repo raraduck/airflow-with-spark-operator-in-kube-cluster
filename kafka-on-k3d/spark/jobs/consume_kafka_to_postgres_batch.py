@@ -40,7 +40,7 @@ json_df.show(10, truncate=False)
 # PostgreSQL에 저장 (기존 내용 덮어쓰기)
 json_df.write \
     .format("jdbc") \
-    .option("url", "jdbc:postgresql://postgres:5432/airflow") \
+    .option("url", "jdbc:postgresql://airflow-postgresql.airflow.svc.cluster.local:5432/airflow") \
     .option("dbtable", "user_events_stream") \
     .option("user", "airflow") \
     .option("password", "airflow") \
