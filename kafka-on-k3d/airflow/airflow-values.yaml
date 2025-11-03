@@ -37,7 +37,16 @@ dags:
   gitSync:
     enabled: false      # Git Sync 기능 비활성화
 
-
+# extraVolumes:  # 최상위 레벨에 있어야 함
+#   - name: spark-yaml-volume
+#     hostPath:
+#       path: /opt/kafka-on-k3d/spark/yaml
+#       type: DirectoryOrCreate
+# 
+# extraVolumeMounts:
+#   - name: spark-yaml-volume
+#     mountPath: /opt/airflow/spark-yaml
+#     readOnly: false
 # ------------------------------
 # Webserver NodePort 설정
 # ------------------------------
@@ -62,10 +71,41 @@ dags:
 # ------------------------------
 scheduler:
   replicas: 1
+  extraVolumes:
+    - name: spark-yaml-volume
+      hostPath:
+        path: /opt/kafka-on-k3d/spark/yaml
+        type: DirectoryOrCreate
+  extraVolumeMounts:
+    - name: spark-yaml-volume
+      mountPath: /opt/spark-yaml
+      readOnly: false
+
+
 triggerer:
   replicas: 1
+  extraVolumes:
+    - name: spark-yaml-volume
+      hostPath:
+        path: /opt/kafka-on-k3d/spark/yaml
+        type: DirectoryOrCreate
+  extraVolumeMounts:
+    - name: spark-yaml-volume
+      mountPath: /opt/spark-yaml
+      readOnly: false
+
+
 workers:
   replicas: 1
+  extraVolumes:
+    - name: spark-yaml-volume
+      hostPath:
+        path: /opt/kafka-on-k3d/spark/yaml
+        type: DirectoryOrCreate
+  extraVolumeMounts:
+    - name: spark-yaml-volume
+      mountPath: /opt/spark-yaml
+      readOnly: false
 
 # ------------------------------
 # (선택) 이미지 캐시 무시하고 항상 새로 pull 하려면 아래 활성화
@@ -102,15 +142,15 @@ workers:
 
 
 # extraVolumes:
-#   - name: airflow-dags
+#   - name: spark-yaml-volume
 #     hostPath:
-#       path: /opt/kafka-on-k3d/airflow/dags
-#       type: DirectoryOrCreate
-
+#       path: /opt/kafka-on-k3d/spark/yaml
+#       type: Directory # DirectoryOrCreate
+# 
 # extraVolumeMounts:
-#   - name: airflow-dags
-#     mountPath: /opt/airflow/dags
-#     readOnly: false
+#   - name: spark-yaml-volume
+#     mountPath: /opt/spark-yaml
+#     # readOnly: false
 
 
   # Already installed in Dockerfile 
