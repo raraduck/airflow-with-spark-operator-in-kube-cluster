@@ -15,3 +15,8 @@ airbnbDF.select(
     "number_of_reviews", 
     "price"
     ).show(5)
+
+trainDF, testDF = airbnbDF.randomSplit([.8, .2], seed=42)
+print(f"""There are {trainDF.count()} rows in the training set, and {testDF.count()} in the test set""")
+
+
