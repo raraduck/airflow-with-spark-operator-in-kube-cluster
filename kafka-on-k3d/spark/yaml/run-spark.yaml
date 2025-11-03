@@ -9,7 +9,7 @@ spec:
   # image: docker.io/library/spark:4.0.0
   image: dwnusa/spark:v3.5.4-amd64
   imagePullPolicy: IfNotPresent
-  mainApplicationFile: local:///opt/spark-data/simple_spark.py
+  mainApplicationFile: local:///opt/spark-data/ml_spark.py
   sparkVersion: 3.5.4
   restartPolicy:
     type: Never

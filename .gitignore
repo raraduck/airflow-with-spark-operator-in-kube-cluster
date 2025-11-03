@@ -4,3 +4,4 @@ plugins
 __pycache__
 config
 .DS_Store
+# *.parquet
