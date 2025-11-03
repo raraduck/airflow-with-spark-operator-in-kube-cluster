@@ -1,8 +1,8 @@
 apiVersion: sparkoperator.k8s.io/v1beta2
 kind: SparkApplication
 metadata:
-  name: spark-consume-kafka
-  namespace: airflow # spark-operator
+  name: simple-spark
+  namespace: default # spark-operator
 spec:
   type: Python
   mode: cluster
