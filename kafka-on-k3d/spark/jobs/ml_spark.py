@@ -24,3 +24,10 @@ vecAssembler = VectorAssembler(inputCols=["bedrooms"], outputCol="features")
 vecTrainDF = vecAssembler.transform(trainDF)
 vecTrainDF.select("bedrooms", "features", "price").show(10)
 
+from pyspark.ml.regression import LinearRegression
+lr = LinearRegression(featuresCol="features", labelCol="price")
+lrModel = lr.fit(vecTrainDF)
+
+m = round(lrModel.coefficients[0], 2)
+b = round(lrModel.intercept, 2)
+print(f"""The formula for the linear regression line is price = {m}*bedrooms + {b}""")
