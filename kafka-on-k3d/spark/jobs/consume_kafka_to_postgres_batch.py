@@ -42,8 +42,8 @@ json_df.write \
     .format("jdbc") \
     .option("url", "jdbc:postgresql://airflow-postgresql.airflow.svc.cluster.local:5432/airflow") \
     .option("dbtable", "user_events_stream") \
-    .option("user", "airflow") \
-    .option("password", "airflow") \
+    .option("user", "postgres") \
+    .option("password", "postgres") \
     .option("driver", "org.postgresql.Driver") \
     .mode("overwrite") \
     .save()
