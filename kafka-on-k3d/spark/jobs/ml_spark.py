@@ -19,4 +19,8 @@ airbnbDF.select(
 trainDF, testDF = airbnbDF.randomSplit([.8, .2], seed=42)
 print(f"""There are {trainDF.count()} rows in the training set, and {testDF.count()} in the test set""")
 
+from pyspark.ml.feature import VectorAssembler
+vecAssembler = VectorAssembler(inputCols=["bedrooms"], outputCol="features")
+vecTrainDF = vecAssembler.transform(trainDF)
+vecTrainDF.select("bedrooms", "features", "price").show(10)
 
